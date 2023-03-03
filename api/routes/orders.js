@@ -4,7 +4,7 @@ const knex = require('../db_connection');
 
 router.get('/', async (req, res, next) => {
   try {
-    let results = await knex('order');
+    let results = await knex('orders');
     res.json(results);
   } catch (error) {
     console.log(error);
@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   const idParam = req.params.id;
   try {
-    let results = await knex('order').where('id', idParam).first();
+    let results = await knex('orders').where('id', idParam).first();
     if (results) {
       results = {"type" : "ressource",
       "order" : results,
@@ -27,16 +27,16 @@ router.get('/:id', async (req, res, next) => {
       }
       const embed = req.query.embed.toLowerCase();
       if (embed == "items") {
-        let items = await knex('item').where('command_id', idParam);
+        let items = await knex('items').where('command_id', idParam);
         if (items) {
           let itemres = [];
           items.forEach(item => {
             itemres.push({
               "id": item.id,
               "uri": item.uri,
-              "name": item.libelle,
-              "price": item.tarif,
-              "quantity": item.quantite,
+              "name": item.label,
+              "price": item.price,
+              "quantity": item.quantity,
             });
           });
           results.order.items = itemres;
@@ -74,12 +74,12 @@ router.put('/:id', async (req, res, next) => {
     if (isdate == "Invalid Date") {
       res.sendStatus(400);
     } else {
-      const test = await knex('order')
+      const test = await knex('orders')
         .where('id', idParam)
         .update({
-          nom: nom,
-          mail: mail,
-          livraison: isdate
+          name: nom,
+          email: mail,
+          withdraw: isdate
         })
       if (test == 1) {
         res.sendStatus(204);
@@ -98,18 +98,18 @@ router.put('/:id', async (req, res, next) => {
 router.get('/:id/items', async (req, res, next) => {
   const idParam = req.params.id;
   try {
-    let order = await knex('order').where('id', idParam).first();
+    let order = await knex('orders').where('id', idParam).first();
     if (order) {
-      let items = await knex('item').where('command_id', idParam);
+      let items = await knex('items').where('command_id', idParam);
       if (items) {
         let result = [];
         items.forEach(item => {
           result.push({
             "id": item.id,
             "uri": item.uri,
-            "name": item.libelle,
-            "price": item.tarif,
-            "quantity": item.quantite,
+            "name": item.label,
+            "price": item.price,
+            "quantity": item.quantity,
           });
         });
         res.json(result);
