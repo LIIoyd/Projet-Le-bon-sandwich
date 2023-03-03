@@ -6,7 +6,7 @@ SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 
-INSERT INTO `order` (`id`, `created_at`, `updated_at`, `livraison`, `nom`, `mail`, `montant`, `remise`, `token`, `client_id`, `ref_paiement`, `date_paiement`, `mode_paiement`, `status`) VALUES
+INSERT INTO `orders` (`id`, `created_at`, `updated_at`, `withdraw`, `name`, `email`, `amount_to_pay`, `discount`, `token`, `client_id`, `payment_ref`, `payment_method`, `payment_date`, `status`) VALUES
 ('cdf6302b-940b-4348-b913-3cb2052bf042',	'2019-11-08 13:45:55',	'2019-11-08 13:45:55',	'2019-11-08 16:56:15',	'Dubois',	'Dubois@free.fr',	40.25,	NULL,	'543fc479e422715feb9562809cdd9ca54528426fae2ec0ff2382a32b937555c3',	NULL,	NULL,	NULL,	NULL,	1),
 ('169c491c-aa60-4251-b3a4-6972fea2aecc',	'2019-11-08 13:45:55',	'2019-11-08 13:45:55',	'2019-11-09 16:11:50',	'Payet',	'Payet@free.fr',	24.00,	NULL,	'2983d045d6026814ba0fe811b6cc535b0d3a65bfebb761645c38b51d5bd95392',	NULL,	'00423afe2b7f5e19e71632e2f7e5f2c52409ac49b7b78b06bc12b116e2962c2b937a9f3c5305fb217299c11101e4118a',	NULL,	NULL,	4),
 ('0b1c222a-94ae-4941-86f0-628795094945',	'2019-11-08 13:45:55',	'2019-11-08 13:45:55',	'2019-11-09 09:47:10',	'Bernard',	'Bernard@bouygtel.fr',	60.75,	NULL,	'78238f268c0eebfa7d2e996be0d297d5fbca8990ee1d024cd1a7ccb554f80805',	NULL,	'26c4b95051d5eec4885dd5dcc6cec43df99702a2232ee349480a424c7033f5b20dc4a93051006011c724920ea05bc7f8',	NULL,	NULL,	4),
@@ -18,7 +18,7 @@ INSERT INTO `order` (`id`, `created_at`, `updated_at`, `livraison`, `nom`, `mail
 ('6d90caa2-b74a-4575-9b8a-bf237306d48b',	'2019-11-08 13:45:56',	'2019-11-08 13:45:56',	'2019-11-10 22:51:31',	'Roussel',	'Roussel@ifrance.com',	42.00,	NULL,	'1942de0de15222d581f5081fa432ce3825113c4105a284b344c9f106ca44a55c',	NULL,	NULL,	NULL,	NULL,	1),
 ('06d23c7f-3a7d-4499-b7f1-0bb53ae40495',	'2019-11-08 13:45:56',	'2019-11-08 13:45:56',	'2019-11-09 13:06:06',	'Collet',	'Collet@tiscali.fr',	5.75,	NULL,	'ec6b9ef90e6dec5948841cfd3cacf14427a9ca3fde2cd4d5ecbb125682633730',	NULL,	NULL,	NULL,	NULL,	1);
 
-INSERT INTO `item` (`id`, `uri`, `libelle`, `tarif`, `quantite`, `command_id`) VALUES
+INSERT INTO `items` (`id`, `uri`, `label`, `price`, `quantity`, `order_id`) VALUES
 (3012,	'/sandwichs/s19005',	'la mer',	5.25,	2,	'cdf6302b-940b-4348-b913-3cb2052bf042'),
 (3013,	'/sandwichs/s19004',	'le forestier',	5.75,	3,	'cdf6302b-940b-4348-b913-3cb2052bf042'),
 (3014,	'/sandwichs/s19001',	'le bucheron',	6.00,	1,	'cdf6302b-940b-4348-b913-3cb2052bf042'),
