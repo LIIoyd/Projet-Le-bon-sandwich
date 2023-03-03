@@ -18,6 +18,13 @@ router.get('/:id', async (req, res, next) => {
   try {
     let results = await knex('order').where('id', idParam).first();
     if (results) {
+      results = {"type" : "ressource",
+      "order" : results,
+      "links" : {
+        "self" :{ "href" : "/orders/" + results.id },
+        "items" :{ "href" : "/orders/" + results.id + "/items"}
+        }
+      }
       res.json(results);
     } else {
       res.status(404).json({
@@ -102,6 +109,10 @@ router.get('/:id/items', async (req, res, next) => {
     res.sendStatus(500);
   }
 });
+
+
+
+
 
 /*Uri not valid*/
 router.all('/:id', async (req, res, next) => {
