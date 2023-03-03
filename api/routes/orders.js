@@ -64,6 +64,45 @@ router.put('/:id', async (req, res, next) => {
   }
 });
 
+/* récupérer les items d'une order */
+router.get('/:id/items', async (req, res, next) => {
+  const idParam = req.params.id;
+  try {
+    let order = await knex('order').where('id', idParam).first();
+    if (order) {
+      let items = await knex('item').where('command_id', idParam);
+      if (items) {
+        let result = [];
+        items.forEach(item => {
+          result.push({
+            "id": item.id,
+            "uri": item.uri,
+            "name": item.libelle,
+            "price": item.tarif,
+            "quantity": item.quantite,
+          });
+        });
+        res.json(result);
+      } else {
+        res.status(404).json({
+          "type": "error",
+          "error": 404,
+          "message": "ressource non disponible : /orders/" + idParam + "/items"
+        })
+      }
+    } else {
+      res.status(404).json({
+        "type": "error",
+        "error": 404,
+        "message": "ressource non disponible : /orders/" + idParam + "/items"
+      })
+    }
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
 /*Uri not valid*/
 router.all('/:id', async (req, res, next) => {
   res.status(405).json({
