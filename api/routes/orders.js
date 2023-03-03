@@ -25,6 +25,29 @@ router.get('/:id', async (req, res, next) => {
         "items" :{ "href" : "/orders/" + results.id + "/items"}
         }
       }
+      const embed = req.query.embed.toLowerCase();
+      if (embed == "items") {
+        let items = await knex('item').where('command_id', idParam);
+        if (items) {
+          let itemres = [];
+          items.forEach(item => {
+            itemres.push({
+              "id": item.id,
+              "uri": item.uri,
+              "name": item.libelle,
+              "price": item.tarif,
+              "quantity": item.quantite,
+            });
+          });
+          results.order.items = itemres;
+        } else {
+          res.status(404).json({
+            "type": "error",
+            "error": 404,
+            "message": "ressource non disponible "
+          })
+        }
+      }
       res.json(results);
     } else {
       res.status(404).json({
