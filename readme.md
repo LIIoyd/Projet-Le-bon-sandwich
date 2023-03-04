@@ -1,7 +1,10 @@
 ### Le Bon Sandwich
 
-# Initialisation du projet
+# Cordurie Lucas / Jarosz Léa / Leblanc Lilian / Sacquard Julien
 
+Conception dans le dossier /docs
+
+# Initialisation du projet
 
 1. `docker compose run api npm install`
 
@@ -11,6 +14,4 @@
 
 - Adminer : http://localhost:8181
 
-- Api : http://localhost:3333/ 
-
-# Cordurie Lucas / Jarosz Léa / Leblanc Lilian / Sacquard Julien
+- Api : http://localhost:3333/
