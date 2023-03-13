@@ -4,12 +4,125 @@ const knex = require("../db_connection");
 const Joi = require("joi");
 const { v4: uuidv4 } = require("uuid");
 
+let pagination = 2;
+
+/* Méthode GET sur /orders. Récupération des commandes avec possibilité de filtre, de tri et de pagination */
 router.get("/", async (req, res, next) => {
+  // Récupération des paramètres de la requête
+  let client = req.query.c;
+  let sort = req.query.sort;
+  let page = req.query.page;
+
+  // Cas sans problème d'éxécution
   try {
-    let results = await knex("orders");
-    res.json(results);
+    // Paramètres de la requête pour les liens de pagination
+    let parametersArray = [];
+
+    // Construction de la requête de base
+    let query = knex("orders");
+    // Si un client est spécifié, on l'ajoute à la requête
+    if (client != undefined) {
+      query = query.where("name", client);
+      parametersArray = [...parametersArray, "c=" + client];
+    }
+
+    // On récupère le nombre de commandes pour la pagination
+    let count = await query.clone().count("id as count");
+    let maxPage = Math.ceil(count[0].count / pagination);
+
+    // Si un tri est spécifié, on l'ajoute à la requête
+    if (sort != undefined) {
+      if (sort == "date") {
+        query = query.orderBy("created_at", "desc");
+        parametersArray = [...parametersArray, "sort=date"];
+      } else if (sort == "amount") {
+        query = query.orderBy("amount_to_pay", "desc");
+        parametersArray = [...parametersArray, "sort=amount"];
+      }
+    } else {
+      query = query.orderBy("withdraw", "asc");
+    }
+
+    // Si une page est spécifiée, on l'ajoute à la requête
+    if (page != undefined) {
+      if (page <= 0) {
+        page = 1;
+      } else if (page > maxPage) {
+        page = maxPage;
+      }
+      query = query.offset((page - 1) * pagination).limit(pagination);
+    }
+
+    // On éxécute la requête
+    let orders = await query;
+
+    // Si on a des commandes
+    if (orders) {
+      // On construit chaque commande
+      let ordersRes = [];
+      orders.forEach(async (order) => {
+        let orderDatas = {
+          order: {
+            id: order.id,
+            client_name: order.name,
+            order_date: order.created_at,
+            delivery_date: order.withdraw,
+            status: order.status,
+            amount: order.amount_to_pay,
+          },
+          links: {
+            self: { href: "/orders/" + order.id },
+          },
+        };
+        ordersRes.push(orderDatas);
+      });
+      // On construit les liens de pagination
+      let links = null;
+      if (page != undefined) {
+        links = [
+          {
+            next:
+              parseInt(page) + 1 <= maxPage
+                ? {
+                    href:
+                      "/orders?page=" +
+                      (parseInt(page) + 1) +
+                      "&" +
+                      parametersArray.join("&"),
+                  }
+                : null,
+            prev:
+              parseInt(page) - 1 > 0
+                ? {
+                    href:
+                      "/orders?page=" +
+                      (parseInt(page) - 1) +
+                      "&" +
+                      parametersArray.join("&"),
+                  }
+                : null,
+            first: { href: "/orders?page=1&" + parametersArray.join("&") },
+            last: {
+              href: "/orders?page=" + maxPage + "&" + parametersArray.join("&"),
+            },
+          },
+        ];
+      }
+      // On construit le résultat
+      let result = [
+        {
+          type: "collection",
+          count: count[0].count,
+          size: orders.length,
+          links: links,
+          orders: ordersRes,
+        },
+      ];
+      // On envoie le résultat
+      res.json(result);
+    }
   } catch (error) {
-    console.log(error);
+    // Cas où il y a un problème d'éxécution
     res.sendStatus(500);
   }
 });
