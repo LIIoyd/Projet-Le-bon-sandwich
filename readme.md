@@ -6,9 +6,11 @@ Conception dans le dossier /docs
 
 # Initialisation du projet
 
-1. `docker compose run api npm install`
+1. `docker compose run node_orders npm install`
 
-2. `docker-compose up`
+2. `docker compose run node_orders npm install`
+
+3. `docker-compose up`
 
 # Lien utiles
 

@@ -1,4 +1,7 @@
 *.env
-api/node_modules
-db/data/
-api/package-lock.json
+app/auth/node_modules
+app/orders/node_modules
+db/auth/data/
+db/orders/data/
+app/auth/package-lock.json
+app/orders/package-lock.json
