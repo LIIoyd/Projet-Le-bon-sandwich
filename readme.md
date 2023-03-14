@@ -1,6 +1,6 @@
 ### Le Bon Sandwich
 
-# Cordurie Lucas / Jarosz Léa / Leblanc Lilian / Sacquard Julien
+# Cordurié Lucas / Jarosz Léa / Leblanc Lilian / Sacquard Julien
 
 Conception dans le dossier /docs
 
@@ -14,6 +14,7 @@ Conception dans le dossier /docs
 
 # Lien utiles
 
-- Adminer : http://localhost:8181
-
-- Api : http://localhost:3333/
+- Adminer Order : http://localhost:8181
+- Api Orders : http://localhost:3333/
+- Adminer Auth : http://localhost:8182
+- Api Auth : http://localhost:3334/
