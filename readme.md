@@ -8,7 +8,7 @@ Conception dans le dossier /docs
 
 1. `docker compose run node_orders npm install`
 
-2. `docker compose run node_orders npm install`
+2. `docker compose run node_auth npm install`
 
 3. `docker-compose up`
 
