@@ -4,7 +4,7 @@ const knex = require("../db_connection");
 const Joi = require("joi");
 const { v4: uuidv4 } = require("uuid");
 
-/* Méthode POST sur /order. Nouvelles commandes avec nouveaux items */
+/* Méthode POST sur /auth */
 router.post("/", async (req, res, next) => {});
 
 /* Méthode pour tout Uri invalide */
