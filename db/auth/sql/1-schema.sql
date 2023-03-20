@@ -17,6 +17,7 @@ CREATE TABLE `clients` (
   `email` varchar(256) NOT NULL,
   `password` varchar(256) NOT NULL,
   `total_spent` decimal(8,2) DEFAULT NULL,
+  `refresh_token` varchar(256) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
