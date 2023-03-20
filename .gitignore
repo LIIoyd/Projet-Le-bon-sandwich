@@ -1,7 +1,9 @@
 *.env
 app/auth/node_modules
 app/orders/node_modules
+app/lbs/node_modules
 db/auth/data/
 db/orders/data/
 app/auth/package-lock.json
 app/orders/package-lock.json
+app/lbs/package-lock.json
