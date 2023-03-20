@@ -10,7 +10,9 @@ Conception dans le dossier /docs
 
 2. `docker compose run node_auth npm install`
 
-3. `docker-compose up`
+3. `docker compose run node_lbs npm install`
+
+4. `docker-compose up`
 
 # Lien utiles
 

@@ -15,7 +15,7 @@ services:
     volumes:
       - ./app/orders:/usr/src/app #synchronise le répertoire local ./app/orders avec le répertoire du container ${WORKDIR}
     networks:
-      - orders
+      - lbs
     links:
       - mariadb_orders #facilite l'accès à la base de données via le network
     depends_on:
@@ -34,7 +34,7 @@ services:
     ports:
       - 3306:3306 #associe le port local 3306 au port 3306 du container
     networks:
-      - orders
+      - lbs
     healthcheck:
       #vérifie le fonctionnement du service
       test:
@@ -59,7 +59,7 @@ services:
     ports:
       - 8181:8080 #associe le port local 8181 au port 8080 du container
     networks:
-      - orders
+      - lbs
 
   node_auth:
     image: node:alpine
@@ -72,7 +72,7 @@ services:
     volumes:
       - ./app/auth:/usr/src/app
     networks:
-      - auth
+      - lbs
     links:
       - mariadb_auth
     depends_on:
@@ -89,7 +89,7 @@ services:
     ports:
       - 3307:3306
     networks:
-      - auth
+      - lbs
     healthcheck:
       test:
         [
@@ -112,10 +112,23 @@ services:
     ports:
       - 8182:8080
     networks:
-      - auth
+      - lbs
+
+  node_lbs:
+    image: node:alpine
+    command: npm run watch
+    working_dir: /usr/src/app
+    links:
+      - node_orders
+      - node_auth
+    ports:
+      - 3335:3000
+    volumes:
+      - ./app/lbs:/usr/src/app
+    networks:
+      - lbs
 
 networks:
-  orders:
+  lbs:
     driver: bridge
-  auth:
-    driver: bridge
+  
