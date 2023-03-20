@@ -55,6 +55,75 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Verify route
+router.get('/auth', (req, res) => {
+ 
+    // Get token value to the json body
+    const token = req.headers['authorization'];
+ 
+    // If the token is present
+    if(token || !token.startsWith("Bearer")){
+        console.log(token);
+        // Verify the token using jwt.verify method
+        const bearer = token.split(" ");
+        const bearerToken = bearer[1];
+
+        console.log(bearerToken);
+      
+        try{
+          const decode = jwt.verify(bearerToken, 'secret');
+
+          //  Return response with decode data
+          res.status(200).json({
+              login: true,
+              data: decode
+          });
+
+        }catch(err){
+           res.status(401).json({
+            login: false,
+            data: 'error'
+          });
+        }
+    }else{
+ 
+        // Return response with error
+        res.status(401).json({
+            login: false,
+            data: 'error'
+        });
+    }
+});
+
 /* Méthode pour tout Uri invalide */
 router.all("/:id", async (req, res, next) => {
   res.status(405).json({
