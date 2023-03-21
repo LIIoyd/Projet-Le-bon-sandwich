@@ -7,3 +7,4 @@ db/orders/data/
 app/auth/package-lock.json
 app/orders/package-lock.json
 app/lbs/package-lock.json
+db/directus

@@ -127,6 +127,39 @@ services:
       - ./app/lbs:/usr/src/app
     networks:
       - lbs
+      
+  directus_database:
+    container_name: database
+    image: postgis/postgis:13-master
+    volumes:
+      - ./db/directus:/var/lib/postgresql/data
+    networks:
+      - lbs
+    env_file:
+    - directus.env
+
+  directus:
+    container_name: directus
+    image: directus/directus:latest
+    ports:
+      - 8055:8055
+    volumes:
+      # By default, uploads are stored in /directus/uploads
+      # Always make sure your volumes matches the storage root when using
+      # local driver
+      - ./uploads:/directus/uploads
+      # Make sure to also mount the volume when using SQLite
+      # - ./database:/directus/database
+      # If you want to load extensions from the host
+      # - ./extensions:/directus/extensions
+    networks:
+      - lbs
+    depends_on:
+      - directus_database
+    env_file:
+    - directus.env
+    
+
 
 networks:
   lbs:
