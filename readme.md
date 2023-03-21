@@ -20,3 +20,9 @@ Conception dans le dossier /docs
 - Api Orders : http://localhost:3333/
 - Adminer Auth : http://localhost:8182
 - Api Auth : http://localhost:3334/
+
+
+- directus : http://localhost:8055/admin 
+- Email admin@admin.com
+- admin
+- Api directus : http://localhost:8055/items/ {nom de la collection}
