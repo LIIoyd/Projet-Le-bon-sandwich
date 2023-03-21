@@ -32,22 +32,18 @@ router.post("/signin", async (req, res, next) => {
   const schema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
-  });
-
+  }); 
+       
   const { error, value } = schema.validate(req.body);
 
   // Si aucune erreur de validation du body, on continue
   if (!error) {
     try {
-      const user = await axios.post(`http://node_auth:3000/auth/signin`, {
+      const user = await axios.post("http://node_auth:3000/auth/signin", {
         email: value.email,
         password: value.password,
       });
-      if (user) {
         res.json(user.data);
-      } else {
-        res.sendStatus(401);
-      }
     } catch (err) {
         res.sendStatus(err.response.status);
     }

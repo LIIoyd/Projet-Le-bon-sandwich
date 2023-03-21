@@ -14,7 +14,7 @@ router.post("/signup", async (req, res, next) => {
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
   });
-
+  
   const { error, value } = schema.validate(req.body);
 
   // Si aucune erreur de validation du body, on continue
@@ -67,9 +67,8 @@ router.post("/signin", async (req, res, next) => {
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
   });
-
   const { error, value } = schema.validate(req.body);
-
+ 
   // Si aucune erreur de validation du body, on continue
   if (!error) {
     try {
@@ -88,7 +87,8 @@ router.post("/signin", async (req, res, next) => {
         if (validPassword) {
           // On génère les tokens
           const tokens = await generateTokens(user.id);
-
+          console.log(tokens.access_token);
+          console.log(tokens.refresh_token);
           // On retourne les tokens
           res.status(200).json({
             access_token: tokens.access_token,
@@ -172,7 +172,6 @@ router.get("/validate", (req, res) => {
   try {
     //On appelle la metode verifyToken pour vérifier le token en lui passant en parametre le header autorization
     const decode = verifyToken(req.headers["authorization"]);
-    console.log(decode);
     //  Si le token est valide on renvoie un status 200 avec le login a true et les données du token
     res.status(200).json({
       login: true,

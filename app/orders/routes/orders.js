@@ -191,7 +191,6 @@ router.get("/:id", async (req, res, next) => {
     }
   } catch (error) {
     // Cas avec problème d'éxécution
-    console.log(error);
     req.sendStatus(500);
   }
 });
@@ -221,7 +220,6 @@ router.put("/:id", async (req, res, next) => {
       const idParam = req.params.id;
       const { client_name, client_mail, date, time } = req.body;
       const isdate = new Date(date + " " + time);
-      console.log(isdate);
 
       if (isdate == "Invalid Date") {
         res.sendStatus(400);
@@ -243,7 +241,6 @@ router.put("/:id", async (req, res, next) => {
     }
   } catch (error) {
     // Cas avec problème d'éxécution
-    console.error(error);
     req.sendStatus(500);
   }
 });
@@ -285,7 +282,6 @@ router.get("/:id/items", async (req, res, next) => {
     }
   } catch (error) {
     // Cas avec problème d'éxécution
-    console.log(error);
     res.sendStatus(500);
   }
 });
@@ -309,7 +305,6 @@ router.post("/", async (req, res, next) => {
     label: Joi.string().alphanum().min(3).max(30).required(),
     price: Joi.number().min(0).required(),
   });
-
   // Cas sans problème d'éxécution
   try {
     let validator = true;
@@ -395,7 +390,6 @@ router.post("/", async (req, res, next) => {
     }
   } catch (error) {
     // Cas d'erreur
-    console.log(error);
     res.sendStatus(500);
   }
 });
