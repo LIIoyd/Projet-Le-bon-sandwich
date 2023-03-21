@@ -39,18 +39,17 @@ router.post("/signin", async (req, res, next) => {
   // Si aucune erreur de validation du body, on continue
   if (!error) {
     try {
-      const user = await axios.post(`http://node_auth:3000/auth/signin`, value);
+      const user = await axios.post(`http://node_auth:3000/auth/signin`, {
+        email: value.email,
+        password: value.password,
+      });
       if (user) {
         res.json(user.data);
       } else {
         res.sendStatus(401);
       }
     } catch (err) {
-      res.status(401).json({
-        type: "error",
-        error: err.response.status,
-        message: err.response.data.message,
-      });
+        res.sendStatus(err.response.status);
     }
   } else {
     res.sendStatus(400);
