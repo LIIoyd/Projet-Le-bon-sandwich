@@ -41,7 +41,8 @@ router.post("/", async (req, res, next) => {
         client_name: Joi.string().alphanum().min(3).max(30).required(),
         client_mail: Joi.string().email().required(),
         delivery: Joi.object({
-            date: Joi.date().required(),
+            // date future only
+            date: Joi.date().min('now').required(),
             time: Joi.string().pattern(new RegExp("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")).required(),
         }).required(),
         items: Joi.array().items(
@@ -56,6 +57,16 @@ router.post("/", async (req, res, next) => {
     const { error, value } = schema.validate(req.body);
     if (!error) {  
         try {
+            exist = true;
+            while (exist) {
+                req.body.items.forEach(async element => {
+                    id = element.uri.replace('/sandwiches/', '');
+                    await axios.get(`http://directus:8055/items/sandwiches/${id}`).catch((err) => {
+                        exist = false;
+                        res.json(err.response.data)
+                    });
+                });
+            }
             const authorization = req.headers.authorization.split(' ')[1];
             await axios.get(`http://node_auth:3000/auth/validate`, {
                 headers: { 'Authorization' : `Bearer ${authorization}` }
