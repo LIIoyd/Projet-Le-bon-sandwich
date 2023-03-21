@@ -19,9 +19,9 @@ router.post("/signup", async (req, res, next) => {
         password: value.password,
       });
 
-      return user.data;
+      res.json(user.data);
     } catch (err) {
-      res.sendStatus(500);
+      res.sendStatus(err.response.status);
     }
   } else {
     res.sendStatus(400);
