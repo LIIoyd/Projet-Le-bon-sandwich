@@ -58,7 +58,8 @@ router.post("/", async (req, res, next) => {
     if (!error) {  
         try {
             exist = true;
-            while (exist) {
+            ite = 0;
+            while (exist && req.body.items.length > ite) {
                 req.body.items.forEach(async element => {
                     id = element.uri.replace('/sandwiches/', '');
                     await axios.get(`http://directus:8055/items/sandwiches/${id}`).catch((err) => {
@@ -66,6 +67,7 @@ router.post("/", async (req, res, next) => {
                         res.json(err.response.data)
                     });
                 });
+                ite++;
             }
             const authorization = req.headers.authorization.split(' ')[1];
             await axios.get(`http://node_auth:3000/auth/validate`, {
